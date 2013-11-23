@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+require 'rspec_piccolo'
+class_name = $*[0]
+class_path = $*[1]
+method_names = $*[2..-1] if $*.size > 2
+RSpecPiccolo::Core.new.generate class_name, class_path, method_names
