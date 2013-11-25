@@ -1,3 +1,3 @@
-module RspecPiccolo
-  VERSION = "0.0.1"
+module RSpecPiccolo
+  VERSION = "0.0.2"
 end

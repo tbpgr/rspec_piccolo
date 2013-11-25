@@ -21,7 +21,7 @@ You have to execute these commands in your project root directory.
 
 ### Case only class_name, class_place
 ~~~
-piccolo SomeClass some_class_place
+piccolo execute SomeClass some_class_place
 ~~~
 
 Result, spec/some_class_place
@@ -37,7 +37,7 @@ end
 
 ### Case module_name + class_name, directory_name + class_place
 ~~~
-piccolo SomeModule::SomeClass some_directory/some_class_place
+piccolo execute SomeModule::SomeClass some_directory/some_class_place
 ~~~
 
 Result, spec/some_directory/some_class_place
@@ -53,7 +53,7 @@ end
 
 ### Case class_name, class_place, method_names
 ~~~
-piccolo SomeClass some_class_place method1 method2
+piccolo execute SomeClass some_class_place method1 method2
 ~~~
 
 Result, spec/some_class_place
@@ -181,7 +181,7 @@ rspec --init
 
 You generate concrete spec by piccolo.
 ~~~
-piccolo FizzBuzz fizz_buzz fizz_buzz
+piccolo execute FizzBuzz fizz_buzz fizz_buzz
 ~~~
 
 Generated spec is ...

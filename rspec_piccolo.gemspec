@@ -5,7 +5,7 @@ require 'rspec_piccolo/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rspec_piccolo"
-  spec.version       = RspecPiccolo::VERSION
+  spec.version       = RSpecPiccolo::VERSION
   spec.authors       = ["tbpgr"]
   spec.email         = ["tbpgr@tbpgr.jp"]
   spec.description   = %q{generate rspec spec_file with list_cases}
@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_runtime_dependency  "activesupport", "~> 4.0.1"
+  spec.add_runtime_dependency "thor", "~> 0.18.1"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"

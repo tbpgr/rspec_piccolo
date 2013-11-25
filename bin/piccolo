@@ -1,7 +1,29 @@
 #!/usr/bin/env ruby
-
+require 'rspec_piccolo/version'
 require 'rspec_piccolo'
-class_name = $*[0]
-class_path = $*[1]
-method_names = $*[2..-1] if $*.size > 2
-RSpecPiccolo::Core.new.generate class_name, class_path, method_names
+require "thor"
+
+module RSpecPiccolo
+  #= RSpecPiccolo CLI
+  class CLI < Thor
+    class_option :help, :type => :boolean, :aliases => '-h', :desc => 'help message.'
+    class_option :version, :type => :boolean, :desc => 'version'
+    default_task :execute
+
+    desc "execute", "show dialog with title, message"
+    def execute(*args)
+      class_name = args[0]
+      class_path = args[1]
+      method_names = args[2..-1] if args.size > 2
+
+      RSpecPiccolo::Core.new.generate class_name, class_path, method_names
+    end
+
+    desc "version", "version"
+    def version
+      p RSpecPiccolo::VERSION
+    end
+  end
+end
+
+RSpecPiccolo::CLI.start(ARGV)
