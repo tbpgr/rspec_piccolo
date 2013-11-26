@@ -6,11 +6,11 @@ require "thor"
 module RSpecPiccolo
   #= RSpecPiccolo CLI
   class CLI < Thor
-    class_option :help, :type => :boolean, :aliases => '-h', :desc => 'help message.'
-    class_option :version, :type => :boolean, :desc => 'version'
+    class_option :help, :type => :boolean, :aliases => 'h', :desc => 'help message.'
+    class_option :version, :type => :boolean, :aliases => 'v', :desc => 'version'
     default_task :execute
 
-    desc "execute", "show dialog with title, message"
+    desc "execute", "generate rspec spec_file with list_cases"
     def execute(*args)
       class_name = args[0]
       class_path = args[1]
