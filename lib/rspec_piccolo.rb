@@ -1,6 +1,7 @@
 require "rspec_piccolo/version"
 require "erb"
 require 'active_support/inflector'
+require 'fileutils'
 
 module RSpecPiccolo
   #= RSpecPiccolo Core
@@ -100,7 +101,7 @@ EOS
 
     def create_spec_directory(class_path)
       return if Dir.exists? "./spec/#{File.dirname(class_path)}"
-      Dir.mkdir("./spec/#{File.dirname(class_path)}")
+      FileUtils.mkdir_p("./spec/#{File.dirname(class_path)}")
     end
 
     def generate_class_template(class_name, class_path, methods_template)

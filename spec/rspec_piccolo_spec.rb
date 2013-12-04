@@ -1,6 +1,7 @@
 # encoding: utf-8
 require "spec_helper"
 require "rspec_piccolo"
+require "fileutils"
 
 describe RSpecPiccolo::Core do
   context :generate do
@@ -275,6 +276,93 @@ describe Hoge::Core do
 end
 EOS
 
+    CASE9_EXPECTED=<<-EOS
+# encoding: utf-8
+require "spec_helper"
+require "some_dir/some_sub_dir/hoge_core"
+
+describe Hoge::Core do
+  context :method1 do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected"
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=\#{c[:case_no]}|case_title=\#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          hoge_core = Hoge::Core.new
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = hoge_core.method1
+
+          # -- then --
+          # TODO: implement assertion code
+          # expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+  context :method2 do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected"
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=\#{c[:case_no]}|case_title=\#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          hoge_core = Hoge::Core.new
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = hoge_core.method2
+
+          # -- then --
+          # TODO: implement assertion code
+          # expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+end
+EOS
+
     cases = [
       {
         case_no: 1,
@@ -311,6 +399,7 @@ EOS
         case_title: "with directory, classname(with module) and method_names",
         class_name: "Hoge::Core",
         class_path: "some_dir/hoge_core",
+        del_dir: "some_dir",
         method_names: ["method1", "method2"],
         expected_file_name: "./spec/some_dir/hoge_core_spec.rb",
         expected_file_exists: true,
@@ -348,6 +437,17 @@ EOS
         method_names: ["method1"],
         expect_error: true
       },
+      {
+        case_no: 9,
+        case_title: "with two directories, classname(with module) and method_names",
+        class_name: "Hoge::Core",
+        class_path: "some_dir/some_sub_dir/hoge_core",
+        del_dir: "some_dir",
+        method_names: ["method1", "method2"],
+        expected_file_name: "./spec/some_dir/some_sub_dir/hoge_core_spec.rb",
+        expected_file_exists: true,
+        expected_contents: CASE9_EXPECTED
+      },
     ]
 
     cases.each do |c|
@@ -383,6 +483,7 @@ EOS
         # implement each case after
         return if c[:expect_error]
         File.delete(c[:expected_file_name]) if File.exists?(c[:expected_file_name])
+        FileUtils.rm_rf("spec/some_dir")
       end
     end
   end
