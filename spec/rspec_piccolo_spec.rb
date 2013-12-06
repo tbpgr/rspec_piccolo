@@ -12,6 +12,7 @@ require "hoge_core"
 
 describe Hoge::Core do
 
+
 end
 EOS
 
@@ -21,12 +22,14 @@ require "spec_helper"
 require "hoge_core"
 
 describe Hoge::Core do
+
   context :method1 do
     cases = [
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -44,14 +47,16 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -65,7 +70,8 @@ describe Hoge::Core do
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -83,14 +89,16 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -108,12 +116,14 @@ require "spec_helper"
 require "only_class"
 
 describe OnlyClass do
+
   context :method1 do
     cases = [
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -131,14 +141,16 @@ describe OnlyClass do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -152,7 +164,8 @@ describe OnlyClass do
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -170,14 +183,16 @@ describe OnlyClass do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -195,12 +210,14 @@ require "spec_helper"
 require "some_dir/hoge_core"
 
 describe Hoge::Core do
+
   context :method1 do
     cases = [
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -218,14 +235,16 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -239,7 +258,8 @@ describe Hoge::Core do
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -257,14 +277,16 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -282,12 +304,14 @@ require "spec_helper"
 require "some_dir/some_sub_dir/hoge_core"
 
 describe Hoge::Core do
+
   context :method1 do
     cases = [
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -305,14 +329,16 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)
@@ -326,7 +352,8 @@ describe Hoge::Core do
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected"
+        expected: "expected",
+
       },
     ]
 
@@ -344,14 +371,128 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # expect(actual).to eq(c[:expected])
+          # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
+
         end
       end
 
       def case_before(c)
         # implement each case before
+
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+end
+EOS
+
+    CASE10_EXPECTED=<<-EOS
+# encoding: utf-8
+require "spec_helper"
+require "hoge_core"
+
+describe Hoge::Core do
+  REPORT = "rspec_report"
+  DIRS = File.path(__FILE__).gsub(/^.*\\/spec\\//, '').gsub(File.basename(__FILE__), '')
+  OUT_DIR = "./#\{REPORT}/#\{DIRS}"
+  REPORT_NAME = report_name = File.basename(__FILE__, ".rb")
+  REPORT_FILE = "#\{OUT_DIR}#\{REPORT_NAME}.tsv"
+
+  mkspec_report = Proc.new do
+    Dir.mkdir(REPORT) unless File.exists?(REPORT)
+    FileUtils.mkdir_p(OUT_DIR) unless File.exists?(OUT_DIR)
+    File.open(REPORT_FILE, "w") {|f|f.puts "method\\tcase\\ttitle\\tsuccess\\/failure"}
+  end.call
+
+  success = Proc.new {|c|File.open(REPORT_FILE, "a") {|f|f.puts "\\tsuccess"}}
+  failure = Proc.new {|c|File.open(REPORT_FILE, "a") {|f|f.puts "\\tfailure"}}
+
+  context :method1 do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected",
+        success_hook: success,
+        failure_hook: failure
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=\#{c[:case_no]}|case_title=\#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          hoge_core = Hoge::Core.new
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = hoge_core.method1
+
+          # -- then --
+          # TODO: implement assertion code
+          # ret = expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+          sf_hook = ret ? c[:success_hook] : c[:failure_hook]
+          sf_hook.call(c)
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+        File.open(REPORT_FILE, "a") {|f|f.print "method1\\t#\{c[:case_no]}\\t#\{c[:case_title]}"}
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+  context :method2 do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected",
+        success_hook: success,
+        failure_hook: failure
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=\#{c[:case_no]}|case_title=\#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          hoge_core = Hoge::Core.new
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = hoge_core.method2
+
+          # -- then --
+          # TODO: implement assertion code
+          # ret = expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+          sf_hook = ret ? c[:success_hook] : c[:failure_hook]
+          sf_hook.call(c)
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+        File.open(REPORT_FILE, "a") {|f|f.print "method2\\t#\{c[:case_no]}\\t#\{c[:case_title]}"}
       end
 
       def case_after(c)
@@ -448,6 +589,17 @@ EOS
         expected_file_exists: true,
         expected_contents: CASE9_EXPECTED
       },
+      {
+        case_no: 10,
+        case_title: "classname(with module) and method_names",
+        class_name: "Hoge::Core",
+        class_path: "hoge_core",
+        method_names: ["method1", "method2"],
+        reportable: true,
+        expected_file_name: "./spec/hoge_core_spec.rb",
+        expected_file_exists: true,
+        expected_contents: CASE10_EXPECTED
+      },
     ]
 
     cases.each do |c|
@@ -460,11 +612,11 @@ EOS
 
           # -- when --
           if c[:expect_error]
-            lambda {piccolo.generate(c[:class_name], c[:class_path], c[:method_names])}.should raise_error(RSpecPiccolo::RSpecPiccoloError)
+            lambda {piccolo.generate(c[:class_name], c[:class_path], c[:method_names], c[:reportable])}.should raise_error(RSpecPiccolo::RSpecPiccoloError)
             # case_after c
             next
           end
-          piccolo.generate(c[:class_name], c[:class_path], c[:method_names])
+          piccolo.generate(c[:class_name], c[:class_path], c[:method_names], c[:reportable])
 
           # -- then --
           expect(File.exists?(c[:expected_file_name])).to be_true
@@ -477,6 +629,7 @@ EOS
 
       def case_before(c)
         # implement each case before
+
       end
 
       def case_after(c)

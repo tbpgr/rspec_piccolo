@@ -8,6 +8,7 @@ module RSpecPiccolo
   class CLI < Thor
     class_option :help, :type => :boolean, :aliases => 'h', :desc => 'help message.'
     class_option :version, :type => :boolean, :aliases => 'v', :desc => 'version'
+    class_option :reportable, :type => :boolean, :aliases => 'r', :desc => 'reportable'
     default_task :execute
 
     desc "execute", "generate rspec spec_file with list_cases"
@@ -16,7 +17,7 @@ module RSpecPiccolo
       class_path = args[1]
       method_names = args[2..-1] if args.size > 2
 
-      RSpecPiccolo::Core.new.generate class_name, class_path, method_names
+      RSpecPiccolo::Core.new.generate class_name, class_path, method_names, options[:reportable]
     end
 
     desc "version", "version"
