@@ -20,12 +20,12 @@ Or install it yourself as:
 You have to execute these commands in your project root directory.
 
 ### Case only class_name, class_place
-~~~
+~~~bash
 piccolo execute SomeClass some_class_place
 ~~~
 
 Result, spec/some_class_place
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "some_class_place"
@@ -36,12 +36,12 @@ end
 ~~~
 
 ### Case module_name + class_name, directory_name + class_place
-~~~
+~~~bash
 piccolo execute SomeModule::SomeClass some_directory/some_class_place
 ~~~
 
 Result, spec/some_directory/some_class_place
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "some_directory/some_class_place"
@@ -52,12 +52,12 @@ end
 ~~~
 
 ### Case class_name, class_place, method_names
-~~~
+~~~bash
 piccolo execute SomeClass some_class_place method1 method2
 ~~~
 
 Result, spec/some_class_place
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "some_class_place"
@@ -147,12 +147,12 @@ end
 ### Case class_name, class_place, method_names with report
 you can output report by -r(reportable) option.
 
-~~~
+~~~bash
 piccolo execute Hoge hoge/hige/hoge hoge hige -r
 ~~~
 
 product code
-~~~
+~~~ruby
 # encoding: utf-8
 
 class Hoge
@@ -167,7 +167,7 @@ end
 ~~~
 
 Result, spec/hoge/hige/hoge_spec.rb
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "hoge/hige/hoge"
@@ -280,7 +280,7 @@ end
 ~~~
 
 Edit manually, spec/hoge/hige/hoge_spec.rb
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "hoge/hige/hoge"
@@ -403,7 +403,7 @@ end
 ~~~
 
 Execute rspec command. 
-~~~
+~~~bash
 $rspec
 Run options: include {:focus=>true}
 
@@ -440,8 +440,8 @@ rspec ./spec/hoge/hige/hoge_spec.rb:89 # Hoge hige |case_no=2|case_title=invalid
 ~~~
 
 you get tsv report.
-~~~
-tree
+~~~bash
+$ tree
 ┠ lib
 ┃┗ hoge
 ┃     ┗ hige
@@ -472,7 +472,7 @@ This sample, you create fizzbuzz application.
 If your product-code is ...
 
 lib/fizz_buzz.rb
-~~~
+~~~ruby
 # encoding: utf-8
 
 class FizzBuzz
@@ -495,19 +495,19 @@ end
 ~~~
 
 you generate rspec template
-~~~
+~~~bash
 rspec --init
 ~~~
 
 You generate concrete spec by piccolo.
-~~~
+~~~bash
 piccolo execute FizzBuzz fizz_buzz fizz_buzz
 ~~~
 
 Generated spec is ...
 
 spec/fizz_buzz_spec.rb
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "fizz_buzz"
@@ -558,7 +558,7 @@ end
 After edit, your spec is like this.
 
 spec/fizz_buzz_spec.rb
-~~~
+~~~ruby
 # encoding: utf-8
 require "spec_helper"
 require "fizz_buzz"
@@ -624,7 +624,7 @@ end
 ~~~
 
 Test Result
-~~~
+~~~bash
 $rspec
 Run options: include {:focus=>true}
 
