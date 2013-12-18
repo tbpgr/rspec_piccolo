@@ -144,6 +144,107 @@ describe SomeClass do
 end
 ~~~
 
+### Case class_name, class_place, instance_method_name and class_method_name
+~~~bash
+piccolo execute SomeClass some_class_place instance_method class_method@c
+~~~
+
+Result, spec/some_class_place
+~~~ruby
+$ cat spec/some_class_place_spec.rb
+# encoding: utf-8
+require "spec_helper"
+require "some_class_place"
+
+describe SomeClass do
+
+  context :instance_method do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected",
+
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=#{c[:case_no]}|case_title=#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          some_class = SomeClass.new
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = some_class.instance_method
+
+          # -- then --
+          # TODO: implement assertion code
+          # ret = expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+  context :class_method do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected",
+
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=#{c[:case_no]}|case_title=#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          # nothing
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = SomeClass.class_method
+
+          # -- then --
+          # TODO: implement assertion code
+          # ret = expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+end
+~~~
+
 ### Case class_name, class_place, method_names with report
 you can output report by -r(reportable) option.
 
@@ -636,6 +737,7 @@ Finished in 0.0045 seconds
 ~~~
 
 ## History
+* version 0.0.6 : add class method generation.
 * version 0.0.5 : add reportable option.
 * version 0.0.4 : you can get multi level directory spec case.
 * version 0.0.2 : fix bin.(use thor).

@@ -53,11 +53,11 @@ end
           case_before c
 
           # -- given --
-          <%=instance_name%> = <%=class_name%>.new
+          <%=given_src%>
 
           # -- when --
           # TODO: implement execute code
-          # actual = <%=instance_name%>.<%=method_name%>
+          <%=when_src%>
 
           # -- then --
           # TODO: implement assertion code
@@ -79,6 +79,8 @@ end
     end
   end
 EOS
+          # <%=given_src%>
+          # <%=when_src%>
     
     REPORTABLE_CASE =<<-EOS
         success_hook: success,
@@ -124,10 +126,15 @@ EOS
 
     def generate_method_template(class_name, method_names, reportable)
       return "" if method_names.nil?
+
       reportable_case = reportable ? REPORTABLE_CASE.chop : ""
       instance_name = class_name.gsub('::', '_').underscore.downcase
       method_templates = []
       method_names.each do |method_name|
+        is_class_method = (method_name.match(/@c$/) ? true : false)
+        method_name = method_name.gsub("@c", "") if is_class_method
+        given_src = is_class_method ? "# nothing" : "#{instance_name} = #{class_name}.new"
+        when_src = is_class_method ? "# actual = #{class_name}.#{method_name}" : "# actual = #{instance_name}.#{method_name}"
         reportable_case_before = reportable ? REPORTABLE_CASE_BEFORE.dup : ""
         reportable_case_before.gsub!("method_name", method_name)
         reportable_case_after = reportable ? REPORTABLE_CASE_AFTER.dup.chop : ""
