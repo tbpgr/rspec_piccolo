@@ -562,6 +562,110 @@ describe Hoge::Core do
 end
 EOS
 
+
+    CASE12_EXPECTED = <<-EOS
+# encoding: utf-8
+require "spec_helper"
+require "some_dir/hoge_core"
+
+describe Hoge::Core do
+
+  context :method1 do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected",
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=\#{c[:case_no]}|case_title=\#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          hoge_core = Hoge::Core.new
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = hoge_core.method1
+
+          # -- then --
+          # TODO: implement assertion code
+          # expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+
+  context :method2 do
+    cases = [
+      {
+        case_no: 1,
+        case_title: "case_title",
+        expected: "expected",
+      },
+    ]
+
+    cases.each do |c|
+      it "|case_no=\#{c[:case_no]}|case_title=\#{c[:case_title]}" do
+        begin
+          case_before c
+
+          # -- given --
+          # nothing
+
+          # -- when --
+          # TODO: implement execute code
+          # actual = Hoge::Core.method2
+
+          # -- then --
+          # TODO: implement assertion code
+          # expect(actual).to eq(c[:expected])
+        ensure
+          case_after c
+        end
+      end
+
+      def case_before(c)
+        # implement each case before
+      end
+
+      def case_after(c)
+        # implement each case after
+      end
+    end
+  end
+end
+EOS
+
+    CASE12_PRODUCT_EXPECTED = <<-EOS
+# encoding: utf-8
+
+module Hoge
+  class Core
+    def method1
+      # TOOD: implement your code
+    end
+
+    def self.method2
+      # TOOD: implement your code
+    end
+  end
+end
+    EOS
+
     cases = [
       {
         case_no: 1,
@@ -649,7 +753,7 @@ EOS
       },
       {
         case_no: 10,
-        case_title: 'classname(with module) and method_names',
+        case_title: 'classname(with module) and method_names reportable',
         class_name: 'Hoge::Core',
         class_path: 'hoge_core',
         method_names: ['method1', 'method2'],
@@ -668,6 +772,20 @@ EOS
         expected_file_exists: true,
         expected_contents: CASE11_EXPECTED
       },
+      {
+        case_no: 12,
+        case_title: 'classname(with module) and method_names(instance method, class method) and product code output',
+        class_name: 'Hoge::Core',
+        class_path: 'some_dir/hoge_core',
+        method_names: ['method1', 'method2@c'],
+        productcode: true,
+        expected_file_name: './spec/some_dir/hoge_core_spec.rb',
+        expected_file_exists: true,
+        expected_product_file_name: './lib/some_dir/hoge_core.rb',
+        expected_product_file_exists: true,
+        expected_contents: CASE12_EXPECTED,
+        expected_product_contents: CASE12_PRODUCT_EXPECTED
+      },
     ]
 
     cases.each do |c|
@@ -677,19 +795,26 @@ EOS
 
           # -- given --
           piccolo = RSpecPiccolo::Core.new
+          options = {}
+          options[:reportable] = c[:reportable]
+          options[:productcode] = c[:productcode]
 
           # -- when --
           if c[:expect_error]
-            lambda { piccolo.generate(c[:class_name], c[:class_path], c[:method_names], c[:reportable]) }.should raise_error(RSpecPiccolo::RSpecPiccoloError)
-            # case_after c
+            lambda { piccolo.generate(c[:class_name], c[:class_path], c[:method_names], options) }.should raise_error(RSpecPiccolo::RSpecPiccoloError)
             next
           end
-          piccolo.generate(c[:class_name], c[:class_path], c[:method_names], c[:reportable])
+          piccolo.generate(c[:class_name], c[:class_path], c[:method_names], options)
 
           # -- then --
           expect(File.exists?(c[:expected_file_name])).to be_true
           actual = File.open(c[:expected_file_name]) { |f|f.read }
           expect(actual).to eq(c[:expected_contents])
+          if c[:productcode]
+            expect(File.exists?(c[:expected_product_file_name])).to be_true
+            actual = File.open(c[:expected_product_file_name]) { |f|f.read }
+            expect(actual).to eq(c[:expected_product_contents])
+          end
         ensure
           case_after c
         end
@@ -697,7 +822,6 @@ EOS
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -705,6 +829,8 @@ EOS
         return if c[:expect_error]
         File.delete(c[:expected_file_name]) if File.exists?(c[:expected_file_name])
         FileUtils.rm_rf('spec/some_dir')
+        File.delete(c[:expected_product_file_name]) if !c[:expected_product_file_name].nil? && File.exists?(c[:expected_product_file_name])
+        FileUtils.rm_rf('lib/some_dir')
       end
     end
   end

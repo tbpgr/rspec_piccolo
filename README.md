@@ -24,7 +24,7 @@ You have to execute these commands in your project root directory.
 piccolo execute SomeClass some_class_place
 ~~~
 
-Result, spec/some_class_place
+Result, spec/some_class_place_spec.rb
 ~~~ruby
 # encoding: utf-8
 require "spec_helper"
@@ -40,7 +40,7 @@ end
 piccolo execute SomeModule::SomeClass some_directory/some_class_place
 ~~~
 
-Result, spec/some_directory/some_class_place
+Result, spec/some_directory/some_class_place_spec.rb
 ~~~ruby
 # encoding: utf-8
 require "spec_helper"
@@ -56,7 +56,7 @@ end
 piccolo execute SomeClass some_class_place method1 method2
 ~~~
 
-Result, spec/some_class_place
+Result, spec/some_class_place_spec.rb
 ~~~ruby
 # encoding: utf-8
 require "spec_helper"
@@ -140,7 +140,31 @@ describe SomeClass do
       end
     end
   end
+end
+~~~
 
+### Case class_name, class_place, method_names with product code
+~~~bash
+piccolo execute SomeClass some_class_place method1 method2 -p
+~~~
+
+Result, spec/some_class_place_spec.rb
+~~~ruby
+# omission
+~~~
+
+Result, lib/some_class_place.rb
+~~~ruby
+# encoding: utf-8
+
+class SomeClass
+  def method1
+    # TOOD: implement your code
+  end
+
+  def method2
+    # TOOD: implement your code
+  end
 end
 ~~~
 
@@ -149,7 +173,7 @@ end
 piccolo execute SomeClass some_class_place instance_method class_method@c
 ~~~
 
-Result, spec/some_class_place
+Result, spec/some_class_place_spec.rb
 ~~~ruby
 $ cat spec/some_class_place_spec.rb
 # encoding: utf-8
@@ -164,7 +188,6 @@ describe SomeClass do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -185,13 +208,11 @@ describe SomeClass do
           # ret = expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -206,7 +227,6 @@ describe SomeClass do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -224,16 +244,14 @@ describe SomeClass do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -241,7 +259,6 @@ describe SomeClass do
       end
     end
   end
-
 end
 ~~~
 
@@ -376,7 +393,6 @@ describe Hoge do
       end
     end
   end
-
 end
 ~~~
 
@@ -499,7 +515,6 @@ describe Hoge do
       end
     end
   end
-
 end
 ~~~
 
@@ -720,7 +735,6 @@ describe FizzBuzz do
       end
     end
   end
-
 end
 ~~~
 
@@ -737,6 +751,7 @@ Finished in 0.0045 seconds
 ~~~
 
 ## History
+* version 0.0.7 : add product code generation option .delete unuse empty-line, unuse ret variable.
 * version 0.0.6 : add class method generation.
 * version 0.0.5 : add reportable option.
 * version 0.0.4 : you can get multi level directory spec case.
