@@ -1,17 +1,17 @@
 #!/usr/bin/env ruby
 require 'rspec_piccolo/version'
 require 'rspec_piccolo'
-require "thor"
+require 'thor'
 
 module RSpecPiccolo
-  #= RSpecPiccolo CLI
+  # = RSpecPiccolo CLI
   class CLI < Thor
-    class_option :help, :type => :boolean, :aliases => 'h', :desc => 'help message.'
-    class_option :version, :type => :boolean, :aliases => 'v', :desc => 'version'
-    class_option :reportable, :type => :boolean, :aliases => 'r', :desc => 'reportable'
+    class_option :help, type: :boolean, aliases: 'h', desc: 'help message.'
+    class_option :version, type: :boolean, aliases: 'v', desc: 'version'
+    class_option :reportable, type: :boolean, aliases: 'r', desc: 'reportable'
     default_task :execute
 
-    desc "execute", "generate rspec spec_file with list_cases"
+    desc 'execute', 'generate rspec spec_file with list_cases'
     def execute(*args)
       class_name = args[0]
       class_path = args[1]
@@ -20,7 +20,7 @@ module RSpecPiccolo
       RSpecPiccolo::Core.new.generate class_name, class_path, method_names, options[:reportable]
     end
 
-    desc "version", "version"
+    desc 'version', 'version'
     def version
       p RSpecPiccolo::VERSION
     end

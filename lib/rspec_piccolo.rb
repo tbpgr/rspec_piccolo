@@ -1,13 +1,13 @@
-require "rspec_piccolo/version"
-require "erb"
+require 'rspec_piccolo/version'
+require 'erb'
 require 'active_support/inflector'
 require 'fileutils'
 
 module RSpecPiccolo
-  #= RSpecPiccolo Core
+  # = RSpecPiccolo Core
   class Core
-    #== RSPec class template
-    CLASS_TEMPLATE=<<-EOS
+    # == RSPec class template
+    CLASS_TEMPLATE = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "<%=class_path%>"
@@ -18,7 +18,7 @@ describe <%=class_name%> do
 end
     EOS
 
-    REPORTABLE_PREPARE =<<-EOS
+    REPORTABLE_PREPARE = <<-EOS
   REPORT = "rspec_report"
   DIRS = File.path(__FILE__).gsub(/^.*\\/spec\\//, '').gsub(File.basename(__FILE__), '')
   OUT_DIR = "./#\{REPORT}/#\{DIRS}"
@@ -35,8 +35,8 @@ end
   failure = Proc.new {|c|File.open(REPORT_FILE, "a") {|f|f.puts "\\tfailure"}}
     EOS
 
-    #== RSPec method template
-    METHOD_TEMPLATE=<<-EOS
+    # == RSPec method template
+    METHOD_TEMPLATE = <<-EOS
   context :<%=method_name%> do
     cases = [
       {
@@ -81,26 +81,26 @@ end
 EOS
           # <%=given_src%>
           # <%=when_src%>
-    
-    REPORTABLE_CASE =<<-EOS
+
+    REPORTABLE_CASE = <<-EOS
         success_hook: success,
         failure_hook: failure
     EOS
 
     REPORTABLE_CASE_BEFORE = '        File.open(REPORT_FILE, "a") {|f|f.print "method_name\\t#{c[:case_no]}\\t#{c[:case_title]}"}'
 
-    REPORTABLE_CASE_AFTER =<<-EOS
+    REPORTABLE_CASE_AFTER = <<-EOS
           sf_hook = ret ? c[:success_hook] : c[:failure_hook]
           sf_hook.call(c)
     EOS
 
-    #== initialize
+    # == initialize
     def initialize
-      @contents = ""
+      @contents = ''
     end
 
-    #== generate rspec test case
-    #=== params
+    # == generate rspec test case
+    # === params
     #- class_name: spec's module+class full name
     #- class_path: spec's class_path(if you want to create spec/hoge_spec.rb, you should set 'hoge_spec.rb')
     #- method_names: target class's method list
@@ -110,34 +110,34 @@ EOS
       methods_template = generate_method_template(class_name, method_names, reportable)
       @contents = generate_class_template(class_name, class_path, methods_template, reportable)
       create_spec_directory class_path
-      File.open("./spec/#{class_path}_spec.rb", "w") {|f|f.puts @contents}
+      File.open("./spec/#{class_path}_spec.rb", 'w') { |f|f.puts @contents }
     end
 
     private
     def validate_class_name(class_name)
-      raise RSpecPiccoloError.new("class_name is not allowed nil value") if class_name.nil?
-      raise RSpecPiccoloError.new("class_name is not allowed empty value") if class_name.empty?
+      fail RSpecPiccoloError.new('class_name is not allowed nil value') if class_name.nil?
+      fail RSpecPiccoloError.new('class_name is not allowed empty value') if class_name.empty?
     end
 
     def validate_class_path(class_path)
-      raise RSpecPiccoloError.new("class_path is not allowed nil value") if class_path.nil?
-      raise RSpecPiccoloError.new("class_path is not allowed empty value") if class_path.empty?
+      fail RSpecPiccoloError.new('class_path is not allowed nil value') if class_path.nil?
+      fail RSpecPiccoloError.new('class_path is not allowed empty value') if class_path.empty?
     end
 
     def generate_method_template(class_name, method_names, reportable)
-      return "" if method_names.nil?
+      return '' if method_names.nil?
 
-      reportable_case = reportable ? REPORTABLE_CASE.chop : ""
+      reportable_case = reportable ? REPORTABLE_CASE.chop : ''
       instance_name = class_name.gsub('::', '_').underscore.downcase
       method_templates = []
       method_names.each do |method_name|
         is_class_method = (method_name.match(/@c$/) ? true : false)
-        method_name = method_name.gsub("@c", "") if is_class_method
-        given_src = is_class_method ? "# nothing" : "#{instance_name} = #{class_name}.new"
+        method_name = method_name.gsub('@c', '') if is_class_method
+        given_src = is_class_method ? '# nothing' : "#{instance_name} = #{class_name}.new"
         when_src = is_class_method ? "# actual = #{class_name}.#{method_name}" : "# actual = #{instance_name}.#{method_name}"
-        reportable_case_before = reportable ? REPORTABLE_CASE_BEFORE.dup : ""
-        reportable_case_before.gsub!("method_name", method_name)
-        reportable_case_after = reportable ? REPORTABLE_CASE_AFTER.dup.chop : ""
+        reportable_case_before = reportable ? REPORTABLE_CASE_BEFORE.dup : ''
+        reportable_case_before.gsub!('method_name', method_name)
+        reportable_case_after = reportable ? REPORTABLE_CASE_AFTER.dup.chop : ''
         method_templates << ERB.new(METHOD_TEMPLATE).result(binding)
       end
       method_templates.join("\n")
@@ -149,10 +149,10 @@ EOS
     end
 
     def generate_class_template(class_name, class_path, methods_template, reportable)
-      reportable_prepare = reportable ? REPORTABLE_PREPARE : ""
+      reportable_prepare = reportable ? REPORTABLE_PREPARE : ''
       ERB.new(CLASS_TEMPLATE).result(binding)
     end
   end
 
-  class RSpecPiccoloError < StandardError;end
+  class RSpecPiccoloError < StandardError; end
 end

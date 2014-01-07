@@ -1,11 +1,11 @@
 # encoding: utf-8
-require "spec_helper"
-require "rspec_piccolo"
-require "fileutils"
+require 'spec_helper'
+require 'rspec_piccolo'
+require 'fileutils'
 
 describe RSpecPiccolo::Core do
   context :generate do
-    CASE1_EXPECTED=<<-EOS
+    CASE1_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "hoge_core"
@@ -16,7 +16,7 @@ describe Hoge::Core do
 end
 EOS
 
-    CASE2_EXPECTED=<<-EOS
+    CASE2_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "hoge_core"
@@ -110,7 +110,7 @@ describe Hoge::Core do
 end
 EOS
 
-    CASE3_EXPECTED=<<-EOS
+    CASE3_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "only_class"
@@ -204,7 +204,7 @@ describe OnlyClass do
 end
 EOS
 
-    CASE4_EXPECTED=<<-EOS
+    CASE4_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "some_dir/hoge_core"
@@ -298,7 +298,7 @@ describe Hoge::Core do
 end
 EOS
 
-    CASE9_EXPECTED=<<-EOS
+    CASE9_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "some_dir/some_sub_dir/hoge_core"
@@ -392,7 +392,7 @@ describe Hoge::Core do
 end
 EOS
 
-    CASE10_EXPECTED=<<-EOS
+    CASE10_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "hoge_core"
@@ -504,7 +504,7 @@ describe Hoge::Core do
 end
 EOS
 
-    CASE11_EXPECTED=<<-EOS
+    CASE11_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
 require "hoge_core"
@@ -601,106 +601,106 @@ EOS
     cases = [
       {
         case_no: 1,
-        case_title: "only classname",
-        class_name: "Hoge::Core",
-        class_path: "hoge_core",
+        case_title: 'only classname',
+        class_name: 'Hoge::Core',
+        class_path: 'hoge_core',
         method_names: nil,
-        expected_file_name: "./spec/hoge_core_spec.rb",
+        expected_file_name: './spec/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE1_EXPECTED
       },
       {
         case_no: 2,
-        case_title: "classname(with module) and method_names",
-        class_name: "Hoge::Core",
-        class_path: "hoge_core",
-        method_names: ["method1", "method2"],
-        expected_file_name: "./spec/hoge_core_spec.rb",
+        case_title: 'classname(with module) and method_names',
+        class_name: 'Hoge::Core',
+        class_path: 'hoge_core',
+        method_names: ['method1', 'method2'],
+        expected_file_name: './spec/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE2_EXPECTED
       },
       {
         case_no: 3,
-        case_title: "classname(with no module) and method_names",
-        class_name: "OnlyClass",
-        class_path: "only_class",
-        method_names: ["method1", "method2"],
-        expected_file_name: "./spec/only_class_spec.rb",
+        case_title: 'classname(with no module) and method_names',
+        class_name: 'OnlyClass',
+        class_path: 'only_class',
+        method_names: ['method1', 'method2'],
+        expected_file_name: './spec/only_class_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE3_EXPECTED
       },
       {
         case_no: 4,
-        case_title: "with directory, classname(with module) and method_names",
-        class_name: "Hoge::Core",
-        class_path: "some_dir/hoge_core",
-        del_dir: "some_dir",
-        method_names: ["method1", "method2"],
-        expected_file_name: "./spec/some_dir/hoge_core_spec.rb",
+        case_title: 'with directory, classname(with module) and method_names',
+        class_name: 'Hoge::Core',
+        class_path: 'some_dir/hoge_core',
+        del_dir: 'some_dir',
+        method_names: ['method1', 'method2'],
+        expected_file_name: './spec/some_dir/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE4_EXPECTED
       },
       {
         case_no: 5,
-        case_title: "nil_class",
+        case_title: 'nil_class',
         class_name: nil,
-        class_path: "some_dir/hoge_core",
-        method_names: ["method1"],
+        class_path: 'some_dir/hoge_core',
+        method_names: ['method1'],
         expect_error: true
       },
       {
         case_no: 6,
-        case_title: "empty_class",
-        class_name: "",
-        class_path: "empty_class",
-        method_names: ["method1"],
+        case_title: 'empty_class',
+        class_name: '',
+        class_path: 'empty_class',
+        method_names: ['method1'],
         expect_error: true
       },
       {
         case_no: 7,
-        case_title: "nil_class_path",
-        class_name: "nil_class_path",
+        case_title: 'nil_class_path',
+        class_name: 'nil_class_path',
         class_path: nil,
-        method_names: ["method1"],
+        method_names: ['method1'],
         expect_error: true
       },
       {
         case_no: 8,
-        case_title: "empty_class_path",
-        class_name: "empty_class_path",
-        class_path: "",
-        method_names: ["method1"],
+        case_title: 'empty_class_path',
+        class_name: 'empty_class_path',
+        class_path: '',
+        method_names: ['method1'],
         expect_error: true
       },
       {
         case_no: 9,
-        case_title: "with two directories, classname(with module) and method_names",
-        class_name: "Hoge::Core",
-        class_path: "some_dir/some_sub_dir/hoge_core",
-        del_dir: "some_dir",
-        method_names: ["method1", "method2"],
-        expected_file_name: "./spec/some_dir/some_sub_dir/hoge_core_spec.rb",
+        case_title: 'with two directories, classname(with module) and method_names',
+        class_name: 'Hoge::Core',
+        class_path: 'some_dir/some_sub_dir/hoge_core',
+        del_dir: 'some_dir',
+        method_names: ['method1', 'method2'],
+        expected_file_name: './spec/some_dir/some_sub_dir/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE9_EXPECTED
       },
       {
         case_no: 10,
-        case_title: "classname(with module) and method_names",
-        class_name: "Hoge::Core",
-        class_path: "hoge_core",
-        method_names: ["method1", "method2"],
+        case_title: 'classname(with module) and method_names',
+        class_name: 'Hoge::Core',
+        class_path: 'hoge_core',
+        method_names: ['method1', 'method2'],
         reportable: true,
-        expected_file_name: "./spec/hoge_core_spec.rb",
+        expected_file_name: './spec/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE10_EXPECTED
       },
       {
         case_no: 11,
-        case_title: "classname(with module) and method_names(instance method, class method)",
-        class_name: "Hoge::Core",
-        class_path: "hoge_core",
-        method_names: ["method1", "method2@c"],
-        expected_file_name: "./spec/hoge_core_spec.rb",
+        case_title: 'classname(with module) and method_names(instance method, class method)',
+        class_name: 'Hoge::Core',
+        class_path: 'hoge_core',
+        method_names: ['method1', 'method2@c'],
+        expected_file_name: './spec/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE11_EXPECTED
       },
@@ -716,7 +716,7 @@ EOS
 
           # -- when --
           if c[:expect_error]
-            lambda {piccolo.generate(c[:class_name], c[:class_path], c[:method_names], c[:reportable])}.should raise_error(RSpecPiccolo::RSpecPiccoloError)
+            lambda { piccolo.generate(c[:class_name], c[:class_path], c[:method_names], c[:reportable]) }.should raise_error(RSpecPiccolo::RSpecPiccoloError)
             # case_after c
             next
           end
@@ -724,7 +724,7 @@ EOS
 
           # -- then --
           expect(File.exists?(c[:expected_file_name])).to be_true
-          actual = File.open(c[:expected_file_name]) {|f|f.read}
+          actual = File.open(c[:expected_file_name]) { |f|f.read }
           expect(actual).to eq(c[:expected_contents])
         ensure
           case_after c
@@ -740,7 +740,7 @@ EOS
         # implement each case after
         return if c[:expect_error]
         File.delete(c[:expected_file_name]) if File.exists?(c[:expected_file_name])
-        FileUtils.rm_rf("spec/some_dir")
+        FileUtils.rm_rf('spec/some_dir')
       end
     end
   end
