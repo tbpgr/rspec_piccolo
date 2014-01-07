@@ -656,11 +656,11 @@ EOS
 module Hoge
   class Core
     def method1
-      # TOOD: implement your code
+      # TODO: implement your code
     end
 
     def self.method2
-      # TOOD: implement your code
+      # TODO: implement your code
     end
   end
 end

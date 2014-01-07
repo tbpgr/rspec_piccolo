@@ -201,7 +201,7 @@ EOS
       method_names.each do |method_name|
         method_name = "self.#{method_name.gsub('@c', '')}" if is_class_method?(method_name)
         method_code << "#{module_indent}  def #{method_name}"
-        method_code << "#{module_indent}    # TOOD: implement your code"
+        method_code << "#{module_indent}    # TODO: implement your code"
         method_code << "#{module_indent}  end"
         method_code << ""
       end
