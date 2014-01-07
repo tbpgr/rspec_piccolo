@@ -159,11 +159,11 @@ Result, lib/some_class_place.rb
 
 class SomeClass
   def method1
-    # TOOD: implement your code
+    # TODO: implement your code
   end
 
   def method2
-    # TOOD: implement your code
+    # TODO: implement your code
   end
 end
 ~~~
