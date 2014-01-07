@@ -29,7 +29,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -47,16 +46,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -71,7 +68,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -89,16 +85,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -106,7 +100,6 @@ describe Hoge::Core do
       end
     end
   end
-
 end
 EOS
 
@@ -123,7 +116,6 @@ describe OnlyClass do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -141,16 +133,14 @@ describe OnlyClass do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -165,7 +155,6 @@ describe OnlyClass do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -183,16 +172,14 @@ describe OnlyClass do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -200,7 +187,6 @@ describe OnlyClass do
       end
     end
   end
-
 end
 EOS
 
@@ -217,7 +203,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -235,16 +220,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -259,7 +242,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -277,16 +259,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -294,7 +274,6 @@ describe Hoge::Core do
       end
     end
   end
-
 end
 EOS
 
@@ -311,7 +290,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -329,16 +307,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -353,7 +329,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -371,16 +346,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -388,7 +361,6 @@ describe Hoge::Core do
       end
     end
   end
-
 end
 EOS
 
@@ -500,7 +472,6 @@ describe Hoge::Core do
       end
     end
   end
-
 end
 EOS
 
@@ -517,7 +488,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -535,16 +505,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -559,7 +527,6 @@ describe Hoge::Core do
         case_no: 1,
         case_title: "case_title",
         expected: "expected",
-
       },
     ]
 
@@ -577,16 +544,14 @@ describe Hoge::Core do
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # expect(actual).to eq(c[:expected])
         ensure
           case_after c
-
         end
       end
 
       def case_before(c)
         # implement each case before
-
       end
 
       def case_after(c)
@@ -594,7 +559,6 @@ describe Hoge::Core do
       end
     end
   end
-
 end
 EOS
 

@@ -42,8 +42,7 @@ end
       {
         case_no: 1,
         case_title: "case_title",
-        expected: "expected",
-<%=reportable_case%>
+        expected: "expected",<%=reportable_case%>
       },
     ]
 
@@ -61,16 +60,14 @@ end
 
           # -- then --
           # TODO: implement assertion code
-          # ret = expect(actual).to eq(c[:expected])
+          # <%=reportable_case_ret%>expect(actual).to eq(c[:expected])
         ensure
-          case_after c
-<%=reportable_case_after%>
+          case_after c<%=reportable_case_after%>
         end
       end
 
       def case_before(c)
-        # implement each case before
-<%=reportable_case_before%>
+        # implement each case before<%=reportable_case_before%>
       end
 
       def case_after(c)
@@ -83,16 +80,23 @@ EOS
           # <%=when_src%>
 
     REPORTABLE_CASE = <<-EOS
+
         success_hook: success,
         failure_hook: failure
     EOS
 
-    REPORTABLE_CASE_BEFORE = '        File.open(REPORT_FILE, "a") {|f|f.print "method_name\\t#{c[:case_no]}\\t#{c[:case_title]}"}'
+    REPORTABLE_CASE_BEFORE = <<-EOS
+
+        File.open(REPORT_FILE, "a") {|f|f.print "method_name\\t\#{c[:case_no]}\\t\#{c[:case_title]}"}
+    EOS
 
     REPORTABLE_CASE_AFTER = <<-EOS
+
           sf_hook = ret ? c[:success_hook] : c[:failure_hook]
           sf_hook.call(c)
     EOS
+
+    REPORTABLE_CASE_RET = "ret = "
 
     # == initialize
     def initialize
@@ -108,7 +112,7 @@ EOS
       validate_class_name class_name
       validate_class_path class_path
       methods_template = generate_method_template(class_name, method_names, reportable)
-      @contents = generate_class_template(class_name, class_path, methods_template, reportable)
+      @contents = generate_class_template(class_name, class_path, methods_template.chop, reportable)
       create_spec_directory class_path
       File.open("./spec/#{class_path}_spec.rb", 'w') { |f|f.puts @contents }
     end
@@ -135,9 +139,10 @@ EOS
         method_name = method_name.gsub('@c', '') if is_class_method
         given_src = is_class_method ? '# nothing' : "#{instance_name} = #{class_name}.new"
         when_src = is_class_method ? "# actual = #{class_name}.#{method_name}" : "# actual = #{instance_name}.#{method_name}"
-        reportable_case_before = reportable ? REPORTABLE_CASE_BEFORE.dup : ''
+        reportable_case_before = reportable ? REPORTABLE_CASE_BEFORE.dup.chop : ''
         reportable_case_before.gsub!('method_name', method_name)
         reportable_case_after = reportable ? REPORTABLE_CASE_AFTER.dup.chop : ''
+        reportable_case_ret = reportable ? REPORTABLE_CASE_RET.dup : ''
         method_templates << ERB.new(METHOD_TEMPLATE).result(binding)
       end
       method_templates.join("\n")
