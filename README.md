@@ -170,7 +170,7 @@ end
 
 ### Case class_name, class_place, method_names, fields with product code
 ~~~bash
-piccolo execute SomeClass some_class_place method1 method2 field1 field2 -p
+piccolo execute SomeClass some_class_place method1 method2 field1@f field2@f -p
 ~~~
 
 Result, spec/some_class_place_spec.rb
