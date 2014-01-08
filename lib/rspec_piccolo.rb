@@ -98,10 +98,10 @@ EOS
 
     PRODUCT_CLASS_TEMPLATE = <<-EOS
 # encoding: utf-8
-
+<%=require_rb%>
 <%=module_start%>
 <%=module_indent%>class <%=class_name%>
-<%=methods_template%>
+<%=fields%><%=methods_template%>
 <%=module_indent%>end
 <%=module_end%>
     EOS
@@ -144,6 +144,7 @@ EOS
       instance_name = class_name.gsub('::', '_').underscore.downcase
       method_templates = []
       method_names.each do |method_name|
+        next if is_field?(method_name)
         is_class_method = is_class_method?(method_name)
         method_name = method_name.gsub('@c', '') if is_class_method
         given_src = is_class_method ? '# nothing' : "#{instance_name} = #{class_name}.new"
@@ -173,10 +174,22 @@ EOS
 
     def output_product_code(class_name, class_path, method_names)
       has_module = has_module? class_name
+      has_field = has_field?(method_names)
       module_indent = has_module ? '  ' : ''
+      require_rb = has_field ? "require 'attributes_initializable'" : ''
       module_name, class_name = get_module_class_names class_name, has_module
+      fields = get_fields(method_names, module_indent)
       methods_template = generate_product_method_template(method_names, module_indent)
-      contents = generate_product_class_template(module_name, class_name, class_path, methods_template.chop, module_indent, has_module)
+      contents = generate_product_class_template(
+        module_name,
+        class_name,
+        class_path,
+        methods_template.chop,
+        module_indent,
+        has_module,
+        require_rb,
+        fields
+      )
       create_lib_directory(class_path)
       File.open("./lib/#{class_path}.rb", 'w:UTF-8') { |f|f.puts contents }
     end
@@ -199,6 +212,7 @@ EOS
     def generate_product_method_template(method_names, module_indent)
       method_code = []
       method_names.each do |method_name|
+        next if is_field? method_name
         method_name = "self.#{method_name.gsub('@c', '')}" if is_class_method?(method_name)
         method_code << "#{module_indent}  def #{method_name}"
         method_code << "#{module_indent}    # TODO: implement your code"
@@ -212,7 +226,18 @@ EOS
       method_name.match(/@c$/) ? true : false
     end
 
-    def generate_product_class_template(module_name, class_name, class_path, methods_template, module_indent, has_module)
+    def is_field?(method_name)
+      method_name.match(/@f$/) ? true : false
+    end
+
+    def has_field?(method_names)
+      method_names.each do |method_name|
+        return true if is_field?(method_name)
+      end
+      false
+    end
+
+    def generate_product_class_template(module_name, class_name, class_path, methods_template, module_indent, has_module, require_rb, fields)
       module_start = ""
       module_end = ""
       if has_module
@@ -220,6 +245,18 @@ EOS
         module_end = "end"
       end
       ERB.new(PRODUCT_CLASS_TEMPLATE).result(binding)
+    end
+
+    def get_fields(method_names, module_indent)
+      return '' unless has_field?(method_names)
+      ret = []
+      ret << "#{module_indent}  include AttributesInitializable\n"
+      ret << "#{module_indent}  attr_accessor_init "
+      method_names.each do |method_name|
+        next unless is_field?(method_name)
+        ret << ":#{method_name.gsub(/@f/, '')}, "
+      end
+      "#{ret.join.chop.chop}\n\n"
     end
   end
 

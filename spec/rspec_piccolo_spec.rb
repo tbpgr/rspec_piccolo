@@ -666,6 +666,27 @@ module Hoge
 end
     EOS
 
+    CASE13_EXPECTED = CASE12_EXPECTED
+
+    CASE13_PRODUCT_EXPECTED = <<-EOS
+# encoding: utf-8
+require 'attributes_initializable'
+module Hoge
+  class Core
+    include AttributesInitializable
+    attr_accessor_init :field1, :field2
+
+    def method1
+      # TODO: implement your code
+    end
+
+    def self.method2
+      # TODO: implement your code
+    end
+  end
+end
+    EOS
+
     cases = [
       {
         case_no: 1,
@@ -785,6 +806,20 @@ end
         expected_product_file_exists: true,
         expected_contents: CASE12_EXPECTED,
         expected_product_contents: CASE12_PRODUCT_EXPECTED
+      },
+      {
+        case_no: 13,
+        case_title: 'classname(with module) and method_names(instance method, class method, field1, field2) and product code output',
+        class_name: 'Hoge::Core',
+        class_path: 'some_dir/hoge_core',
+        method_names: ['method1', 'method2@c', 'field1@f', 'field2@f'],
+        productcode: true,
+        expected_file_name: './spec/some_dir/hoge_core_spec.rb',
+        expected_file_exists: true,
+        expected_product_file_name: './lib/some_dir/hoge_core.rb',
+        expected_product_file_exists: true,
+        expected_contents: CASE13_EXPECTED,
+        expected_product_contents: CASE13_PRODUCT_EXPECTED
       },
     ]
 

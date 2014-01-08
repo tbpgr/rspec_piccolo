@@ -168,6 +168,34 @@ class SomeClass
 end
 ~~~
 
+### Case class_name, class_place, method_names, fields with product code
+~~~bash
+piccolo execute SomeClass some_class_place method1 method2 field1 field2 -p
+~~~
+
+Result, spec/some_class_place_spec.rb
+~~~ruby
+# omission
+~~~
+
+Result, lib/some_class_place.rb
+~~~ruby
+# encoding: utf-8
+require 'attributes_initializable'
+class SomeClass
+  include AttributesInitializable
+  attr_accessor_init :field1, :field2
+
+  def method1
+    # TODO: implement your code
+  end
+
+  def method2
+    # TODO: implement your code
+  end
+end
+~~~
+
 ### Case class_name, class_place, instance_method_name and class_method_name
 ~~~bash
 piccolo execute SomeClass some_class_place instance_method class_method@c
@@ -750,7 +778,11 @@ Finished in 0.0045 seconds
 4 examples, 0 failures
 ~~~
 
+## Notice
+* if you want to use field generation, you have to install 'tbpgr_utils' gem (ver >= 0.0.4).
+
 ## History
+* version 0.0.8 : add field generation to product code.(using tbpgr_utils gem)
 * version 0.0.7 : add product code generation option .delete unuse empty-line, unuse ret variable.
 * version 0.0.6 : add class method generation.
 * version 0.0.5 : add reportable option.
