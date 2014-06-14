@@ -835,7 +835,7 @@ end
 
           # -- when --
           if c[:expect_error]
-            lambda { piccolo.generate(c[:class_name], c[:class_path], c[:method_names], options) }.should raise_error(ArgumentError)
+            -> { piccolo.generate(c[:class_name], c[:class_path], c[:method_names], options) }.should raise_error(ArgumentError)
             next
           end
           piccolo.generate(c[:class_name], c[:class_path], c[:method_names], options)
