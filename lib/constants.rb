@@ -1,5 +1,5 @@
-
 module RSpecPiccolo
+  # Constants
   module Constants
     # RSPec class template
     CLASS_TEMPLATE = <<-EOS

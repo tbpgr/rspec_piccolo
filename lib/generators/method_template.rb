@@ -5,6 +5,7 @@ require 'generators/helper'
 module RSpecPiccolo
   # Generators
   module Generators
+    # MethodTemplate
     class MethodTemplate
       class << self
         def generate(class_name, method_names, options)

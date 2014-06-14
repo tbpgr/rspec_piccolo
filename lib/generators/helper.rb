@@ -4,6 +4,7 @@ require 'active_support/inflector'
 module RSpecPiccolo
   # Generators
   module Generators
+    # Helper
     class Helper
       def self.is_class_method?(method_name)
         method_name.match(/@c$/) ? true : false
