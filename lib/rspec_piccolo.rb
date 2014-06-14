@@ -94,7 +94,7 @@ EOS
           sf_hook.call(c)
     EOS
 
-    REPORTABLE_CASE_RET = "ret = "
+    REPORTABLE_CASE_RET = 'ret = '
 
     PRODUCT_CLASS_TEMPLATE = <<-EOS
 # encoding: utf-8
@@ -111,8 +111,8 @@ EOS
       @contents = ''
     end
 
-    #== generate rspec test case
-    #=== params
+    # == generate rspec test case
+    # === params
     #- class_name: spec's module+class full name
     #- class_path: spec's class_path(if you want to create spec/hoge_spec.rb, you should set 'hoge_spec.rb')
     #- method_names: target class's method list
@@ -159,7 +159,7 @@ EOS
     end
 
     def create_spec_directory(class_path)
-      return if Dir.exists? "./spec/#{File.dirname(class_path)}"
+      return if Dir.exist? "./spec/#{File.dirname(class_path)}"
       FileUtils.mkdir_p("./spec/#{File.dirname(class_path)}")
     end
 
@@ -195,7 +195,7 @@ EOS
     end
 
     def create_lib_directory(class_path)
-      return if Dir.exists? "./lib/#{File.dirname(class_path)}"
+      return if Dir.exist? "./lib/#{File.dirname(class_path)}"
       FileUtils.mkdir_p("./lib/#{File.dirname(class_path)}")
     end
 
@@ -206,7 +206,7 @@ EOS
     def get_module_class_names(class_name, has_module)
       return '', class_name unless has_module
       ret = class_name.match /(.*)::(.*)/
-      return ret[1], ret[2]
+      [ret[1], ret[2]]
     end
 
     def generate_product_method_template(method_names, module_indent)
@@ -217,7 +217,7 @@ EOS
         method_code << "#{module_indent}  def #{method_name}"
         method_code << "#{module_indent}    # TODO: implement your code"
         method_code << "#{module_indent}  end"
-        method_code << ""
+        method_code << ''
       end
       method_code.join("\n")
     end
@@ -238,11 +238,11 @@ EOS
     end
 
     def generate_product_class_template(module_name, class_name, class_path, methods_template, module_indent, has_module, require_rb, fields)
-      module_start = ""
-      module_end = ""
+      module_start = ''
+      module_end = ''
       if has_module
         module_start = "module #{module_name}"
-        module_end = "end"
+        module_end = 'end'
       end
       ERB.new(PRODUCT_CLASS_TEMPLATE).result(binding)
     end

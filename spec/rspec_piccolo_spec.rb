@@ -562,7 +562,6 @@ describe Hoge::Core do
 end
 EOS
 
-
     CASE12_EXPECTED = <<-EOS
 # encoding: utf-8
 require "spec_helper"
@@ -703,7 +702,7 @@ end
         case_title: 'classname(with module) and method_names',
         class_name: 'Hoge::Core',
         class_path: 'hoge_core',
-        method_names: ['method1', 'method2'],
+        method_names: %w(method1 method2),
         expected_file_name: './spec/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE2_EXPECTED
@@ -713,7 +712,7 @@ end
         case_title: 'classname(with no module) and method_names',
         class_name: 'OnlyClass',
         class_path: 'only_class',
-        method_names: ['method1', 'method2'],
+        method_names: %w(method1 method2),
         expected_file_name: './spec/only_class_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE3_EXPECTED
@@ -724,7 +723,7 @@ end
         class_name: 'Hoge::Core',
         class_path: 'some_dir/hoge_core',
         del_dir: 'some_dir',
-        method_names: ['method1', 'method2'],
+        method_names: %w(method1 method2),
         expected_file_name: './spec/some_dir/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE4_EXPECTED
@@ -767,7 +766,7 @@ end
         class_name: 'Hoge::Core',
         class_path: 'some_dir/some_sub_dir/hoge_core',
         del_dir: 'some_dir',
-        method_names: ['method1', 'method2'],
+        method_names: %w(method1 method2),
         expected_file_name: './spec/some_dir/some_sub_dir/hoge_core_spec.rb',
         expected_file_exists: true,
         expected_contents: CASE9_EXPECTED
@@ -777,7 +776,7 @@ end
         case_title: 'classname(with module) and method_names reportable',
         class_name: 'Hoge::Core',
         class_path: 'hoge_core',
-        method_names: ['method1', 'method2'],
+        method_names: %w(method1 method2),
         reportable: true,
         expected_file_name: './spec/hoge_core_spec.rb',
         expected_file_exists: true,
@@ -842,11 +841,11 @@ end
           piccolo.generate(c[:class_name], c[:class_path], c[:method_names], options)
 
           # -- then --
-          expect(File.exists?(c[:expected_file_name])).to be_true
+          expect(File.exist?(c[:expected_file_name])).to be_true
           actual = File.open(c[:expected_file_name]) { |f|f.read }
           expect(actual).to eq(c[:expected_contents])
           if c[:productcode]
-            expect(File.exists?(c[:expected_product_file_name])).to be_true
+            expect(File.exist?(c[:expected_product_file_name])).to be_true
             actual = File.open(c[:expected_product_file_name]) { |f|f.read }
             expect(actual).to eq(c[:expected_product_contents])
           end
@@ -862,9 +861,9 @@ end
       def case_after(c)
         # implement each case after
         return if c[:expect_error]
-        File.delete(c[:expected_file_name]) if File.exists?(c[:expected_file_name])
+        File.delete(c[:expected_file_name]) if File.exist?(c[:expected_file_name])
         FileUtils.rm_rf('spec/some_dir')
-        File.delete(c[:expected_product_file_name]) if !c[:expected_product_file_name].nil? && File.exists?(c[:expected_product_file_name])
+        File.delete(c[:expected_product_file_name]) if c[:expected_product_file_name] && File.exist?(c[:expected_product_file_name])
         FileUtils.rm_rf('lib/some_dir')
       end
     end
