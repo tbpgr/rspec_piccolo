@@ -1,6 +1,7 @@
 module RSpecPiccolo
   # Constants
   module Constants
+    # rubocop:disable LineLength
     # RSPec class template
     CLASS_TEMPLATE = <<-EOS
 # encoding: utf-8
@@ -100,5 +101,6 @@ EOS
 <%=module_indent%>end
 <%=module_end%>
     EOS
+    # rubocop:enable LineLength
   end
 end

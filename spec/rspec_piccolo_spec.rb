@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'rspec_piccolo'
 require 'fileutils'
 
+# rubocop:disable LineLength
 describe RSpecPiccolo::Core do
   context :generate do
     CASE1_EXPECTED = <<-EOS
@@ -869,3 +870,4 @@ end
     end
   end
 end
+# rubocop:enable LineLength

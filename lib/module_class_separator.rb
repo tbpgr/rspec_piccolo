@@ -1,7 +1,7 @@
 module RSpecPiccolo
   # ModuleClassSeparator
   class ModuleClassSeparator
-    def self.module_class_names(name)
+    def self.separate(name)
       return '', name unless has_module?(name)
       ret = name.match(/(.*)::(.*)/)
       [ret[1], ret[2]]

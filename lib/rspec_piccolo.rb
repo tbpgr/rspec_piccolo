@@ -19,16 +19,23 @@ module RSpecPiccolo
     # == generate rspec test case
     # === params
     #- class_name: spec's module+class full name
-    #- class_path: spec's class_path(if you want to create spec/hoge_spec.rb, you should set 'hoge_spec.rb')
+    #- class_path: spec's class_path
+    #  (if you want to create spec/hoge_spec.rb, you should set 'hoge_spec.rb')
     #- method_names: target class's method list
     #- options: options
     def generate(class_name, class_path, method_names, options)
       validates(class_name, class_path)
-      methods_template = Generators::MethodTemplate.generate(class_name, method_names, options)
-      @contents = generate_class_template(class_name, class_path, methods_template.chop, options)
+      methods_template = Generators::MethodTemplate.generate(
+        class_name, method_names, options)
+      @contents = generate_class_template(
+        class_name, class_path, methods_template.chop, options)
       create_spec_directory class_path
-      File.open("./spec/#{class_path}_spec.rb", 'w:UTF-8') { |f|f.puts @contents }
-      output_product_code(class_name, class_path, method_names) if output_product? options
+      File.open("./spec/#{class_path}_spec.rb", 'w:UTF-8') do |f|
+        f.puts @contents
+      end
+      if output_product? options
+        output_product_code(class_name, class_path, method_names)
+      end
     end
 
     private
@@ -43,8 +50,14 @@ module RSpecPiccolo
       FileUtils.mkdir_p("./spec/#{File.dirname(class_path)}")
     end
 
-    def generate_class_template(class_name, class_path, methods_template, options)
-      reportable_prepare = options[:reportable] ? Constants::REPORTABLE_PREPARE : ''
+    def generate_class_template(
+      class_name, class_path, methods_template, options)
+      reportable_prepare = \
+          if options[:reportable]
+            Constants::REPORTABLE_PREPARE
+          else
+            ''
+          end
       ERB.new(Constants::CLASS_TEMPLATE).result(binding)
     end
 
@@ -57,18 +70,15 @@ module RSpecPiccolo
       has_field = has_field?(method_names)
       module_indent = has_module ? '  ' : ''
       require_rb = has_field ? "require 'attributes_initializable'" : ''
-      module_name, class_name = ModuleClassSeparator.module_class_names(class_name)
+      module_name, class_name = ModuleClassSeparator.separate(class_name)
       fields = get_fields(method_names, module_indent)
-      methods_template = generate_product_method_template(method_names, module_indent)
+      methods_template = Generators::ProductMethodTemplate.generate(
+        method_names, module_indent)
       contents = generate_product_class_template(
-        module_name,
-        class_name,
-        class_path,
-        methods_template.chop,
-        module_indent,
-        has_module,
-        require_rb,
-        fields
+        module_name, class_name,
+        class_path, methods_template.chop,
+        module_indent, has_module,
+        require_rb, fields
       )
       create_lib_directory(class_path)
       File.open("./lib/#{class_path}.rb", 'w:UTF-8') { |f|f.puts contents }
@@ -79,25 +89,16 @@ module RSpecPiccolo
       FileUtils.mkdir_p("./lib/#{File.dirname(class_path)}")
     end
 
-    def generate_product_method_template(method_names, module_indent)
-      method_code = []
-      method_names.each do |method_name|
-        next if Generators::Helper.is_field? method_name
-        method_name = "self.#{method_name.gsub('@c', '')}" if Generators::Helper.is_class_method?(method_name)
-        method_code << "#{module_indent}  def #{method_name}"
-        method_code << "#{module_indent}    # TODO: implement your code"
-        method_code << "#{module_indent}  end"
-        method_code << ''
-      end
-      method_code.join("\n")
-    end
-
     def has_field?(method_names)
-      method_names.each { |method_name|return true if Generators::Helper.is_field?(method_name) }
+      method_names.each do |method_name|
+        return true if Generators::Helper.is_field?(method_name)
+      end
       false
     end
 
-    def generate_product_class_template(module_name, class_name, class_path, methods_template, module_indent, has_module, require_rb, fields)
+    def generate_product_class_template(
+      module_name, class_name, class_path, methods_template, module_indent,
+      has_module, require_rb, fields)
       module_start = ''
       module_end = ''
       if has_module
