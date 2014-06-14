@@ -205,7 +205,7 @@ EOS
 
     def get_module_class_names(class_name, has_module)
       return '', class_name unless has_module
-      ret = class_name.match /(.*)::(.*)/
+      ret = class_name.match(/(.*)::(.*)/)
       [ret[1], ret[2]]
     end
 
