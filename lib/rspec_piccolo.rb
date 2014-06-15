@@ -44,7 +44,8 @@ module RSpecPiccolo
     end
 
     def generate_method_template(class_name, method_names, options)
-      Generators::MethodTemplate.generate(class_name, method_names, options)
+      mt = Generators::MethodTemplate.new(class_name, method_names, options)
+      mt.generate
     end
 
     def create_spec_directory(class_path)
@@ -72,10 +73,8 @@ module RSpecPiccolo
       has_field = has_field?(mnames)
       mindent = hasm ? '  ' : ''
       require_rb = has_field ? "require 'attributes_initializable'" : ''
-      mname, cname = ModuleClassSeparator.separate(cname)
-      mtemplate = Generators::ProductMethodTemplate.generate(mnames, mindent)
       contents = generate_product_class_template(
-        mname, cname, cpath, mtemplate, mindent, hasm, require_rb, mnames)
+        cname, mindent, hasm, require_rb, mnames)
       create_lib_directory(cpath)
       File.open("./lib/#{cpath}.rb", 'w:UTF-8') { |f|f.puts contents }
     end
@@ -93,16 +92,23 @@ module RSpecPiccolo
     end
 
     def generate_product_class_template(
-      module_name, class_name, class_path, methods_template, module_indent,
-      has_module, require_rb, mnames)
+      class_name, module_indent, has_module, require_rb, mnames)
+      module_name, class_name = ModuleClassSeparator.separate(class_name)
+      methods_template = Generators::ProductMethodTemplate.generate(
+        mnames, module_indent)
       fields = get_fields(mnames, module_indent)
+      module_start, module_end = module_start_end(has_module, module_name)
+      ERB.new(Constants::PRODUCT_CLASS_TEMPLATE).result(binding)
+    end
+
+    def module_start_end(has_module, module_name)
       module_start = ''
       module_end = ''
       if has_module
         module_start = "module #{module_name}"
         module_end = 'end'
       end
-      ERB.new(Constants::PRODUCT_CLASS_TEMPLATE).result(binding)
+      return module_start, module_end
     end
 
     def get_fields(method_names, module_indent)
