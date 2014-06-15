@@ -108,7 +108,7 @@ module RSpecPiccolo
         module_start = "module #{module_name}"
         module_end = 'end'
       end
-      return module_start, module_end
+      [module_start, module_end]
     end
 
     def get_fields(method_names, module_indent)
