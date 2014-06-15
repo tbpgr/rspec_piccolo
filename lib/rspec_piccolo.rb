@@ -25,17 +25,15 @@ module RSpecPiccolo
     #- options: options
     def generate(class_name, class_path, method_names, options)
       validates(class_name, class_path)
-      methods_template = Generators::MethodTemplate.generate(
-        class_name, method_names, options)
+      mtemplate = generate_method_template(class_name, method_names, options)
       @contents = generate_class_template(
-        class_name, class_path, methods_template.chop, options)
+        class_name, class_path, mtemplate.chop, options)
       create_spec_directory class_path
       File.open("./spec/#{class_path}_spec.rb", 'w:UTF-8') do |f|
         f.puts @contents
       end
-      if output_product? options
-        output_product_code(class_name, class_path, method_names)
-      end
+      return unless output_product?(options)
+      output_product_code(class_name, class_path, method_names)
     end
 
     private
@@ -43,6 +41,10 @@ module RSpecPiccolo
     def validates(class_name, class_path)
       Validators::NilEmpty.new('class_name').validate(class_name)
       Validators::NilEmpty.new('class_path').validate(class_path)
+    end
+
+    def generate_method_template(class_name, method_names, options)
+      Generators::MethodTemplate.generate(class_name, method_names, options)
     end
 
     def create_spec_directory(class_path)
@@ -65,23 +67,17 @@ module RSpecPiccolo
       options[:productcode] ? true : false
     end
 
-    def output_product_code(class_name, class_path, method_names)
-      has_module = ModuleClassSeparator.has_module?(class_name)
-      has_field = has_field?(method_names)
-      module_indent = has_module ? '  ' : ''
+    def output_product_code(cname, cpath, mnames)
+      hasm = ModuleClassSeparator.has_module?(cname)
+      has_field = has_field?(mnames)
+      mindent = hasm ? '  ' : ''
       require_rb = has_field ? "require 'attributes_initializable'" : ''
-      module_name, class_name = ModuleClassSeparator.separate(class_name)
-      fields = get_fields(method_names, module_indent)
-      methods_template = Generators::ProductMethodTemplate.generate(
-        method_names, module_indent)
+      mname, cname = ModuleClassSeparator.separate(cname)
+      mtemplate = Generators::ProductMethodTemplate.generate(mnames, mindent)
       contents = generate_product_class_template(
-        module_name, class_name,
-        class_path, methods_template.chop,
-        module_indent, has_module,
-        require_rb, fields
-      )
-      create_lib_directory(class_path)
-      File.open("./lib/#{class_path}.rb", 'w:UTF-8') { |f|f.puts contents }
+        mname, cname, cpath, mtemplate, mindent, hasm, require_rb, mnames)
+      create_lib_directory(cpath)
+      File.open("./lib/#{cpath}.rb", 'w:UTF-8') { |f|f.puts contents }
     end
 
     def create_lib_directory(class_path)
@@ -98,7 +94,8 @@ module RSpecPiccolo
 
     def generate_product_class_template(
       module_name, class_name, class_path, methods_template, module_indent,
-      has_module, require_rb, fields)
+      has_module, require_rb, mnames)
+      fields = get_fields(mnames, module_indent)
       module_start = ''
       module_end = ''
       if has_module
