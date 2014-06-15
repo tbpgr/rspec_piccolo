@@ -7,11 +7,6 @@
 
 # Offense count: 1
 # Cop supports --auto-correct.
-SingleSpaceBeforeFirstArg:
-  Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
 SpecialGlobalVars:
   Enabled: false
 
