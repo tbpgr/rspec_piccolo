@@ -11,10 +11,8 @@ module RSpecPiccolo
       end
 
       def validate(value)
-        fail ArgumentError.new(format(PATH_NIL_MESSAGE, @key)) if value.nil?
-        if value.empty?
-          fail ArgumentError.new(format(PATH_EMPTY_MESSAGE, @key))
-        end
+        fail ArgumentError, format(PATH_NIL_MESSAGE, @key) if value.nil?
+        fail ArgumentError, format(PATH_EMPTY_MESSAGE, @key) if value.empty?
       end
     end
   end
