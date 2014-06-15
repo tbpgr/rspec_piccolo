@@ -15,8 +15,8 @@ module RSpecPiccolo
         end
 
         def generate_each(method_name, module_indent, method_code)
-          return if Helper.is_field? method_name
-          if Helper.is_class_method?(method_name)
+          return if Helper.field? method_name
+          if Helper.class_method?(method_name)
             method_name = "self.#{method_name.gsub('@c', '')}"
           end
           method_code << "#{module_indent}  def #{method_name}"

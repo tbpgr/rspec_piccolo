@@ -69,8 +69,8 @@ module RSpecPiccolo
     end
 
     def output_product_code(cname, cpath, mnames)
-      hasm = ModuleClassSeparator.has_module?(cname)
-      has_field = has_field?(mnames)
+      hasm = ModuleClassSeparator.module?(cname)
+      has_field = field?(mnames)
       mindent = hasm ? '  ' : ''
       require_rb = has_field ? "require 'attributes_initializable'" : ''
       contents = generate_product_class_template(
@@ -84,9 +84,9 @@ module RSpecPiccolo
       FileUtils.mkdir_p("./lib/#{File.dirname(class_path)}")
     end
 
-    def has_field?(method_names)
+    def field?(method_names)
       method_names.each do |method_name|
-        return true if Generators::Helper.is_field?(method_name)
+        return true if Generators::Helper.field?(method_name)
       end
       false
     end
@@ -112,12 +112,12 @@ module RSpecPiccolo
     end
 
     def get_fields(method_names, module_indent)
-      return '' unless has_field?(method_names)
+      return '' unless field?(method_names)
       ret = []
       ret << "#{module_indent}  include AttributesInitializable\n"
       ret << "#{module_indent}  attr_accessor_init "
       method_names.each do |method_name|
-        next unless Generators::Helper.is_field?(method_name)
+        next unless Generators::Helper.field?(method_name)
         ret << ":#{method_name.gsub(/@f/, '')}, "
       end
       "#{ret.join.chop.chop}\n\n"

@@ -33,8 +33,8 @@ module RSpecPiccolo
 
       def generate_each(
         method_name, method_templates, iname, reportable_case, template)
-        return if Helper.is_field?(method_name)
-        is_cmethod = Helper.is_class_method?(method_name)
+        return if Helper.field?(method_name)
+        is_cmethod = Helper.class_method?(method_name)
         method_name = method_name.gsub('@c', '') if is_cmethod
         given_src = get_given_src(is_cmethod, iname)
         when_src = get_when_src(is_cmethod, iname, method_name)

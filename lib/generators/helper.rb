@@ -6,11 +6,11 @@ module RSpecPiccolo
   module Generators
     # Helper
     class Helper
-      def self.is_class_method?(method_name)
+      def self.class_method?(method_name)
         method_name.match(/@c$/) ? true : false
       end
 
-      def self.is_field?(method_name)
+      def self.field?(method_name)
         method_name.match(/@f$/) ? true : false
       end
     end
