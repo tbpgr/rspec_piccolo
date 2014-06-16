@@ -53,7 +53,7 @@ module RSpecPiccolo
       FileUtils.mkdir_p("./spec/#{File.dirname(class_path)}")
     end
 
-    # rubocop:disable UnusedMethodArgument
+    # rubocop:disable UnusedMethodArgument, UselessAssignment
     def generate_class_template(
       class_name, class_path, methods_template, options)
       reportable_prepare = \
@@ -64,7 +64,7 @@ module RSpecPiccolo
           end
       ERB.new(Constants::CLASS_TEMPLATE).result(binding)
     end
-    # rubocop:enable UnusedMethodArgument
+    # rubocop:enable UnusedMethodArgument, UselessAssignment
 
     def output_product?(options)
       options[:productcode] ? true : false
@@ -93,7 +93,7 @@ module RSpecPiccolo
       false
     end
 
-    # rubocop:disable UnusedMethodArgument
+    # rubocop:disable UnusedMethodArgument, UselessAssignment
     def generate_product_class_template(
       class_name, module_indent, has_module, require_rb, mnames)
       module_name, class_name = ModuleClassSeparator.separate(class_name)
@@ -103,7 +103,7 @@ module RSpecPiccolo
       module_start, module_end = module_start_end(has_module, module_name)
       ERB.new(Constants::PRODUCT_CLASS_TEMPLATE).result(binding)
     end
-    # rubocop:enable UnusedMethodArgument
+    # rubocop:enable UnusedMethodArgument, UselessAssignment
 
     def module_start_end(has_module, module_name)
       module_start = ''
