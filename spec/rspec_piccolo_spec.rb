@@ -820,7 +820,7 @@ end
         expected_product_file_exists: true,
         expected_contents: CASE13_EXPECTED,
         expected_product_contents: CASE13_PRODUCT_EXPECTED
-      },
+      }
     ]
 
     cases.each do |c|
