@@ -855,7 +855,7 @@ end
         end
       end
 
-      def case_before(c)
+      def case_before(c) # rubocop:disable UnusedMethodArgument
         # implement each case before
       end
 

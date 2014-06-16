@@ -31,6 +31,7 @@ module RSpecPiccolo
         @options[:reportable] ? Constants::REPORTABLE_CASE.chop : ''
       end
 
+      # rubocop:disable UnusedMethodArgument
       def generate_each(
         method_name, method_templates, iname, reportable_case, template)
         return if Helper.field?(method_name)
@@ -43,6 +44,7 @@ module RSpecPiccolo
         reportable_case_ret = report_case_ret
         method_templates << ERB.new(template).result(binding)
       end
+      # rubocop:enable UnusedMethodArgument
 
       def get_report_case_before(method_name)
         if @options[:reportable]
